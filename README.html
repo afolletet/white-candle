@@ -1,0 +1,155 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>white-candle : Pentest Environment for Beginners - My First Git Repository.md</title><style></style></head><body id="preview">
+<h1 class="code-line" data-line-start=0 data-line-end=1><a id="whitecandle__Pentest_Environment_for_Beginners__My_First_Git_Repository_0"></a>white-candle : Pentest Environment for Beginners - My First Git Repository</h1>
+<p class="has-line-data" data-line-start="2" data-line-end="3">This Environment was created in order to allow the practice of penetration testing on a web server by the mean of 2 Virtual Machines (which redundancy is insured by a load balancer) running the Damn vulnerable Web App, peered with an ELK Stack environment to log and analyse traffic.</p>
+<p class="has-line-data" data-line-start="4" data-line-end="5">The files in this repository were used to configure the network depicted below.</p>
+<p class="has-line-data" data-line-start="6" data-line-end="7"><img src="https://github.com/afolletet/white-candle/blob/main/3.%20Diagrams/NA-Network.drawio" alt="NS Resource Group"></p>
+<p class="has-line-data" data-line-start="8" data-line-end="10">These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above.<br>
+Alternatively, select portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.</p>
+<p class="has-line-data" data-line-start="11" data-line-end="12"><img src="" alt="Playbook"></p>
+<p class="has-line-data" data-line-start="13" data-line-end="14">This document contains the following details:</p>
+<ul>
+<li class="has-line-data" data-line-start="14" data-line-end="15">Description of the Topology</li>
+<li class="has-line-data" data-line-start="15" data-line-end="16">Access Policies</li>
+<li class="has-line-data" data-line-start="16" data-line-end="19">ELK Configuration
+<ul>
+<li class="has-line-data" data-line-start="17" data-line-end="18">Beats in Use</li>
+<li class="has-line-data" data-line-start="18" data-line-end="19">Machines Being Monitored</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="19" data-line-end="21">How to Use the Ansible Build</li>
+</ul>
+<h3 class="code-line" data-line-start=21 data-line-end=22><a id="Description_of_the_Topology_21"></a>Description of the Topology</h3>
+<p class="has-line-data" data-line-start="23" data-line-end="24">The main purpose of this network is to expose a load-balanced and monitored instance of DVWA, the D*mn Vulnerable Web Application.</p>
+<p class="has-line-data" data-line-start="25" data-line-end="27">Load balancing ensures that the application will be highly redundant, allowing consistant availability through attempted DoS attacks, in addition to restricting access to the network through load balancing rules.<br>
+Since the servers VMs will be highly vulnerable, the use of a jump box reduces the attack surface by not exposing every machine directly to the public internet (restricting external connections on the VMs).</p>
+<p class="has-line-data" data-line-start="28" data-line-end="30">Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the logs and system performance.<br>
+Filebeat will retrieve files (mostly logfiles) while Metricbeat will retrieve statistical data (Disk Usage, Inbound traffic, Memory Usage etc…) from the hosts (as many as they are). Both data streams will be sent to Elastic search for storage.</p>
+<p class="has-line-data" data-line-start="31" data-line-end="32">The configuration details of each machine may be found below.</p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Function</th>
+<th>IP Address</th>
+<th>Operating System</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jump Box</td>
+<td>Gateway</td>
+<td>10.0.0.1</td>
+<td>Linux</td>
+</tr>
+<tr>
+<td>Web-1</td>
+<td>Training Server</td>
+<td>10.0.0.5</td>
+<td>Linux</td>
+</tr>
+<tr>
+<td>Web-2</td>
+<td>Training Server</td>
+<td>10.0.0.7</td>
+<td>Linux</td>
+</tr>
+<tr>
+<td>Web-3</td>
+<td>Training Server</td>
+<td>10.0.0.8</td>
+<td>Linux</td>
+</tr>
+<tr>
+<td>ELK-Machine</td>
+<td>Monitoring Server</td>
+<td>20.191.111.206</td>
+<td>Linux</td>
+</tr>
+</tbody>
+</table>
+<h3 class="code-line" data-line-start=41 data-line-end=42><a id="Access_Policies_41"></a>Access Policies</h3>
+<p class="has-line-data" data-line-start="43" data-line-end="44">The machines on the internal network are not exposed to the public Internet. Only the Jump Box machine can accept connections from the Internet. Access to this machine is only allowed from the following IP address range:</p>
+<ul>
+<li class="has-line-data" data-line-start="44" data-line-end="46">142.126.0.0/16</li>
+</ul>
+<p class="has-line-data" data-line-start="46" data-line-end="47">As a consequence of the statement above, machines within the network can only be accessed via de Jump box, which means that the Elk-Machine is also only accessible via the container on the Jump Box (JB Public IP : 20.185.68.208)</p>
+<p class="has-line-data" data-line-start="48" data-line-end="49">A summary of the access policies in place can be found in the table below.</p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Publicly Accessible</th>
+<th>Allowed IP Addresses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jump Box</td>
+<td>Yes</td>
+<td>142.126.0.0/16</td>
+</tr>
+<tr>
+<td>Web-1</td>
+<td>No</td>
+<td>10.0.1.4 / 52.188.168.137</td>
+</tr>
+<tr>
+<td>Web-2</td>
+<td>No</td>
+<td>10.0.1.4 / 52.188.168.137</td>
+</tr>
+<tr>
+<td>Web-3</td>
+<td>No</td>
+<td>10.0.1.4 / 52.188.168.137</td>
+</tr>
+<tr>
+<td>Elk-Machine</td>
+<td>No</td>
+<td>10.0.1.4</td>
+</tr>
+</tbody>
+</table>
+<h3 class="code-line" data-line-start=58 data-line-end=59><a id="Elk_Configuration_58"></a>Elk Configuration</h3>
+<p class="has-line-data" data-line-start="60" data-line-end="61">Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because it’s time saving and can be repeated over and over with no (or very few) error.</p>
+<p class="has-line-data" data-line-start="62" data-line-end="63">The playbook implements the following tasks:</p>
+<ul>
+<li class="has-line-data" data-line-start="63" data-line-end="64">Install the <a href="https://docker.io">docker.io</a> deamon on the Elk Machine (Attention! Do not confuse with the other Linux package “docker”, specify “.io”)</li>
+<li class="has-line-data" data-line-start="64" data-line-end="65">Install the python package-management system “pip”, so the ELK stack (fully written in Python) can run smoothly when installed</li>
+<li class="has-line-data" data-line-start="65" data-line-end="66">Install the Docker module</li>
+<li class="has-line-data" data-line-start="66" data-line-end="67">Increase the virtual memory to allow ELK, a very resource consuming suite, to perform without any memory outage risk</li>
+<li class="has-line-data" data-line-start="67" data-line-end="69">Download the ELK Stack image from the Docker container library and launch it (kibana on port 5601, Elastic Search on port 9200 and Logstach on port 5044)</li>
+</ul>
+<p class="has-line-data" data-line-start="69" data-line-end="70">The following screenshot displays the result of running <code>docker ps</code> after successfully configuring the ELK instance.</p>
+<p class="has-line-data" data-line-start="71" data-line-end="72"><img src="white-candle/blob/main/DockerPS_output.png" alt="Docker ps"></p>
+<h3 class="code-line" data-line-start=73 data-line-end=74><a id="Target_Machines__Beats_73"></a>Target Machines &amp; Beats</h3>
+<p class="has-line-data" data-line-start="74" data-line-end="79">This ELK server is configured to monitor the following machines (all three being part of the same backend load balancing pool):<br>
+Web-1 : 10.0.0.5<br>
+Web-2 : 10.0.0.7<br>
+Web-3 : 10.0.0.8<br>
+The Elk server can “talk” with the three listed Web servers (1,2 &amp;3) thanks to the bridge created between their two distinct Virtual Networks via peering.</p>
+<p class="has-line-data" data-line-start="80" data-line-end="81">We have installed the following Beats on these machines:</p>
+<ul>
+<li class="has-line-data" data-line-start="81" data-line-end="82">Filebeat</li>
+<li class="has-line-data" data-line-start="82" data-line-end="84">Metricbeat</li>
+</ul>
+<p class="has-line-data" data-line-start="84" data-line-end="86">These Beats allow us to collect the following information from each machine:<br>
+Filebeat takes care of the “what” by providing activity logs that can range from ssh logins and new users and groups creations to commands run by hostname. Meanwhile Metricbeat deals with the “how” by providing relevant information on the impacts all the commands run on DVWA have on the system’s information (CPU and Disk usage). This will provide an idea of the scale of each action and give the cybersecurity trainees an opportunity to adapt their attacks and mitigation measures.</p>
+<h3 class="code-line" data-line-start=87 data-line-end=88><a id="Using_the_Playbook_87"></a>Using the Playbook</h3>
+<p class="has-line-data" data-line-start="88" data-line-end="89">In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned:</p>
+<p class="has-line-data" data-line-start="90" data-line-end="91">All the following steps should be performed in the container a.k.a Ansible control node:</p>
+<p class="has-line-data" data-line-start="92" data-line-end="93"><input type="checkbox" id="checkbox1270" checked="true"><label for="checkbox1270">Copy all the .yml scripts to the etc/ansible/files/ folder</label></p>
+<p class="has-line-data" data-line-start="94" data-line-end="99"><input type="checkbox" id="checkbox1271" checked="true"><label for="checkbox1271">You should have:</label><br>
+- One playbook to set the docker for DVWA<br>
+- One playbook to set the Elk server &amp; docker on the Elk Machine<br>
+- One playbook to set Filebeat<br>
+- One playbook to set Metricbeat</p>
+<p class="has-line-data" data-line-start="100" data-line-end="101"><em>Note: In order to run the playbook correctly we need to tell the ansible config files to which virtual machine they should manage</em></p>
+<p class="has-line-data" data-line-start="102" data-line-end="105"><input type="checkbox" id="checkbox1272" checked="true"><label for="checkbox1272">In etc/ansible/, update the following files:</label><br>
+<strong>ansible.config</strong> : <strong>1</strong>. Uncomment the line 107 <strong>2</strong>. Edit it to --&gt; remote_user = [your_VM_username]<br>
+<strong>hosts</strong>: <strong>1</strong>. Uncomment line 19 --&gt; [webservers] <strong>2</strong>. Add your Virtual Machines’ IPs to the list below [webservers] using this syntax, each IP having a new line (like this)👉 --&gt; 255.255.255.255 ansible_python_interpreter=/usr/bin/python3 <strong>3</strong>. 👍 This is the first configured host <strong>4</strong>. Create a new host from scratch with the same nomenclature for the Elk server 👉 [elk] 255.255.255.255 ansible_python_interpreter=/usr/bin/python3</p>
+<p class="has-line-data" data-line-start="106" data-line-end="107"><em>Note: in each playbook there is a mention about which host the docker will install on, this is why we need to configure these host an attribute IPs to them so ansible know where to deploy what. Example : in the DVWA playbook the host in the first lines is [webserver] and on the Elk playbook it is [elk].</em></p>
+<p class="has-line-data" data-line-start="108" data-line-end="109"><input type="checkbox" id="checkbox1273" checked="true"><label for="checkbox1273">Run one playbook at a time using the command : ansible-playbook filename.yml</label></p>
+<p class="has-line-data" data-line-start="110" data-line-end="111"><input type="checkbox" id="checkbox1274" checked="true"><label for="checkbox1274">In order to make sure that the ELK server is running, you can visit this URL: </label><em>http://[ElkMachinePublicIP]:5601/app/kibana</em></p>
+<p class="has-line-data" data-line-start="112" data-line-end="113"><em>Note: as some of your environment’s public IPs might be dynamic, any time your connections does not work, make sure to check that the IPs haven’t changed.</em></p>
+</body></html>
