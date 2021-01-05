@@ -6,12 +6,12 @@ This Environment was created in order to allow the practice of penetration testi
 
 The files in this repository were used to configure the network depicted below.
 
-![NS Resource Group](\3. Diagrams\NA-Network.drawio)
+![NS Resource Group](https://github.com/afolletet/white-candle/blob/main/3.%20Diagrams/NA-Network.png?raw=true)
 
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. 
 Alternatively, select portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.
 
-![Playbook](2. Ansible Scripts\Filebeat-config.yml)
+![Playbook](https://github.com/afolletet/white-candle/blob/main/2.%20Ansible%20Scripts/ElkAnsible.yml)
 
 This document contains the following details:
 - Description of the Topology
