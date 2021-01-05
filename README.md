@@ -71,7 +71,7 @@ The playbook implements the following tasks:
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
-![Docker ps](white-candle/DockerPS_output.png)
+![Docker ps](https://github.com/afolletet/white-candle/blob/main/DockerPS_output.png?raw=true)
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines (all three being part of the same backend load balancing pool):
