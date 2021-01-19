@@ -8,10 +8,24 @@ The files in this repository were used to configure the network depicted below.
 
 ![NS Resource Group](https://github.com/afolletet/white-candle/blob/main/3.%20Diagrams/NA-Network.png?raw=true)
 
-These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. 
-Alternatively, select portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.
+These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above or alternatively,  portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.
 
-![Playbook](https://github.com/afolletet/white-candle/blob/main/2.%20Ansible%20Scripts/Docker4DVWA.yml.ylm)
+```yml
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+filebeat.modules:
+- module: elasticsearch
+  server:
+    enabled: true
+  gc:
+    enabled: true
+  audit:
+    enabled: true
+  slowlog:
+    enabled: true
+  deprecation:
+    enabled: true
+```
 
 This document contains the following details:
 - Description of the Topology
