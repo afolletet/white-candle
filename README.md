@@ -25,6 +25,34 @@ filebeat.modules:
     enabled: true
   deprecation:
     enabled: true
+- module: haproxy
+  log:
+    enabled: true
+- module: kafka
+  log:
+    enabled: true
+- module: kibana
+  log:
+    enabled: true
+- module: nats
+  log:
+    enabled: true
+- module: osquery
+  result:
+    enabled: true
+- module: santa
+  log:
+    enabled: true
+filebeat.inputs:
+- type: log
+  enabled: false
+  paths:
+    - /var/log/*.log
+hosts: ["ELKmachineIP:9200"]
+username: "elastic"
+password: [tobeconfigured]
+setup.kibana:
+  host: "ELKmachineIP:5601"
 ```
 
 This document contains the following details:
